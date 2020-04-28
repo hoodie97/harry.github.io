@@ -91,47 +91,13 @@ b6oP: function(e, t, i) {
                 }),
                 s()
             }),
-            e("#purchase-button").click(function() {
-                void e.ajax({
-                    url: "/store/purchase",
-                    method: "POST",
-                    data: {
-                        _basket: g
-                    },
-                    success: function(t) {
-                        t.success ? (a(t.message, "success"),
-                        g = [],
-                        s(),
-                        e("#available-credits").html(t.credits)) : a(t.message, "danger")
-                    }
-                }))
-            }),
+            console.log(g);
             e(".bond-form").submit(function() {
                 return y = e(this),
                 "" !== y.children(".bond-username").val() || (c.modal("show"),
                 !1)
             }),
-            e("#prompt-purchase").click(function() {
-                var t = e("#prompt-username").val();
-                e.ajax({
-                    url: "/store/username-check",
-                    method: "POST",
-                    data: {
-                        username: t
-                    },
-                    error: function() {
-                        a("Account not found!", "danger", f)
-                    },
-                    success: function() {
-                        a("You are being redirected....", "success", f),
-                        setTimeout(function() {
-                            y.children(".bond-username").val(t),
-                            y.submit(),
-                            console.log("submitted")
-                        }, 1e3)
-                    }
-                })
-            }),
+            
             e(".single-store-bond").click(function() {
                 e(this).children(".bond-form").submit()
             }),
