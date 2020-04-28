@@ -1,0 +1,54 @@
+var o = e("#store-items")
+              , r = e("#store-categories")
+              , l = e("#store-basket")
+              , d = e("#current-store-view-name")
+              , u = e("#notification-container")
+              , h = e("#store-username")
+              , c = e("#username-modal")
+              , f = e("#prompt-messages")
+              , m = h.data("is-ironman")
+              , p = null
+              , _ = localStorage.getItem("basket")
+              , g = "string" == typeof _ ? JSON.parse(_) : []
+              , v = 0
+              , y = null;
+            window.addEventListener("hashchange", t, !1),
+            e(".item-category").click(function() {
+                var t = e(this).data("slug")
+                  , n = e(this).data("name")
+                  , s = e("#items-" + t);
+                p = t,
+                r.hide(),
+                o.show(),
+                s.show(),
+                d.html('<i class="fa fa-arrow-left back-arrow"></i>' + n),
+                e(".back-arrow").click(i)
+            }),
+            e(".single-store-item").click(function() {
+                var t = e(this).data("id")
+                  , i = e(this).data("name")
+                  , n = e(this).data("price");
+                if (!e(this).data("for-ironman") && m)
+                    return void a("This item is not available for Iron Man accounts.", "danger");
+                g.push({
+                    id: t,
+                    name: i,
+                    price: "-" + n
+                }),
+                s()
+            }),
+            e("#purchase-button").click(function() {
+                void e.ajax({
+                    url: "/store/purchase",
+                    method: "POST",
+                    data: {
+                        _basket: g
+                    },
+                    success: function(t) {
+                        t.success ? (a(t.message, "success"),
+                        g = [],
+                        s(),
+                        e("#available-credits").html(t.credits)) : a(t.message, "danger")
+                    }
+                }))
+            }),
