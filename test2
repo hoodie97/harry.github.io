@@ -1,4 +1,58 @@
-var o = e("#store-items")
+b6oP: function(e, t, i) {
+        (function(e) {
+            function t() {
+                var t = window.location.href.split("#")[1];
+                e("#single-category-" + t).trigger("click")
+            }
+            function i() {
+                e("#items-" + p).hide(),
+                o.hide(),
+                r.show(),
+                d.html("Store categories")
+            }
+            function n() {
+                for (var t = e(this).data("id"), i = 0; i < g.length; i++) {
+                    if (g[i].id === t) {
+                        g.splice(i, 1);
+                        break
+                    }
+                }
+                s()
+            }
+            function s() {
+                for (var t = "", i = 0, s = {}, a = 0; a < g.length; a++) {
+                    var o = g[a];
+                    o.id in s ? s[o.id].amount++ : s[o.id] = {
+                        id: o.id,
+                        name: o.name,
+                        price: o.price,
+                        amount: 1
+                    }
+                }
+                for (var r in s) {
+                    var d = s[r];
+                    i += d.price * d.amount,
+                    t += '<li class="single-basket-item noselect" data-id="' + d.id + '">',
+                    t += d.name,
+                    t += " ( " + d.amount + " )",
+                    t += "</li>"
+                }
+                l.html(t),
+                localStorage.setItem("basket", JSON.stringify(g)),
+                e(".single-basket-item").click(n),
+                e("#total-price").html(i),
+                v = i
+            }
+            function a(e, t) {
+                var i = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : u
+                  , n = "";
+                n += '<div class="alert alert-' + t + '">',
+                n += e,
+                n += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">\n    <span aria-hidden="true">&times;</span>\n  </button>',
+                n += "</div>",
+                i.append(n)
+            }
+            var o = e("#store-items")
               , r = e("#store-categories")
               , l = e("#store-basket")
               , d = e("#current-store-view-name")
@@ -52,3 +106,37 @@ var o = e("#store-items")
                     }
                 }))
             }),
+            e(".bond-form").submit(function() {
+                return y = e(this),
+                "" !== y.children(".bond-username").val() || (c.modal("show"),
+                !1)
+            }),
+            e("#prompt-purchase").click(function() {
+                var t = e("#prompt-username").val();
+                e.ajax({
+                    url: "/store/username-check",
+                    method: "POST",
+                    data: {
+                        username: t
+                    },
+                    error: function() {
+                        a("Account not found!", "danger", f)
+                    },
+                    success: function() {
+                        a("You are being redirected....", "success", f),
+                        setTimeout(function() {
+                            y.children(".bond-username").val(t),
+                            y.submit(),
+                            console.log("submitted")
+                        }, 1e3)
+                    }
+                })
+            }),
+            e(".single-store-bond").click(function() {
+                e(this).children(".bond-form").submit()
+            }),
+            l.length > 0 && s(),
+            window.location.hash && t()
+        }
+        ).call(t, i("7t+N"))
+    },
